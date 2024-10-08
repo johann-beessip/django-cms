@@ -250,8 +250,8 @@ class PageUrl(AsTag):
 
     def get_value(self, context, page_lookup, lang, site):
 
-        site_id = get_site_id(site)
         request = context.get('request', False)
+        site_id = get_site_id(site, request)
 
         if not request:
             return ''
@@ -439,7 +439,7 @@ class PageAttribute(AsTag):
         name = name.lower()
         request = context['request']
         lang = get_language_from_request(request)
-        page = _get_page_by_untyped_arg(page_lookup, request, get_site_id(None))
+        page = _get_page_by_untyped_arg(page_lookup, request, get_site_id(None, request))
         if page and name in self.valid_attributes:
             func = getattr(page, "get_%s" % name)
             ret_val = func(language=lang, fallback=True)

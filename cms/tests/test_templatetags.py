@@ -93,22 +93,26 @@ class TemplatetagTests(CMSTestCase):
 
     def test_get_site_id_from_nothing(self):
         with self.settings(SITE_ID=10):
-            self.assertEqual(10, get_site_id(None))
+            self.assertEqual(10, get_site_id(None, None))
 
     def test_get_site_id_from_int(self):
-        self.assertEqual(10, get_site_id(10))
+        self.assertEqual(10, get_site_id(10, None))
 
     def test_get_site_id_from_site(self):
         site = Site()
         site.id = 10
-        self.assertEqual(10, get_site_id(site))
+        self.assertEqual(10, get_site_id(site, None))
 
     def test_get_site_id_from_str_int(self):
-        self.assertEqual(10, get_site_id('10'))
+        self.assertEqual(10, get_site_id('10', None))
 
     def test_get_site_id_from_str(self):
         with self.settings(SITE_ID=10):
-            self.assertEqual(10, get_site_id("something"))
+            self.assertEqual(10, get_site_id("something", None))
+
+    def test_get_site_id_from_request(self):
+        request = RequestFactory().get('/')
+        self.assertEqual(10, get_site_id(None, request))
 
     def test_unicode_placeholder_name_fails_fast(self):
         self.assertRaises(ImproperlyConfigured, get_placeholders, 'unicode_placeholder.html')

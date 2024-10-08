@@ -296,7 +296,7 @@ def get_cms_setting(name):
     return getattr(settings, 'CMS_%s' % name, DEFAULTS[name])
 
 
-def get_site_id(site):
+def get_site_id(site, request):
     from django.contrib.sites.models import Site
     if isinstance(site, Site):
         return site.id
@@ -304,4 +304,6 @@ def get_site_id(site):
         return int(site)
     except (TypeError, ValueError):
         pass
-    return settings.SITE_ID
+
+    return Site.objects.get_current(request).id
+

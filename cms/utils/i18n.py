@@ -19,7 +19,7 @@ def force_language(new_lang):
 
 
 def get_languages(site_id=None):
-    site_id = get_site_id(site_id)
+    site_id = get_site_id(site_id, request=None)
     result = get_cms_setting('LANGUAGES').get(site_id)
     if not result:
         result = []
